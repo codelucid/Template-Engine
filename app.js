@@ -13,11 +13,176 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+function createTeam() {
+    console.log("Please build your team!");
+    let manager = new Manager(inquirer.prompt([
+    {
+        type: "input",
+        message: "What is your manager's name?",
+        name: "name",
+        validate: answer => {
+            if (answer !== "") {
+                return true;
+            } else
+            return "Please enter your name.";
+        }
+    },
+    {
+        type: "input",
+        message: "What is your manager's ID?",
+        name: "id",
+        validate: validateNumber
+    },
+    {
+        type: "input",
+        message: "What is your manager's email?",
+        name: "email",
+        validate: validateEmail
+    },
+    {
+        type: "input",
+        message: "What is your manager's office number?",
+        name: "officeNumber",
+        validate: answer => {
+            if (answer !== "number") {
+                return true;
+            } else
+            return "Please enter your office number.";
+        }
+    }, 
+    ])) 
+    .then(inquirer.prompt([
+    {
+        type: "list",
+        message: "Which type of team member would you like to add?",
+        name: "newMember",
+        choices: ["Engineer", "Intern", "I don't need any more team members."]
+    }
+    ]))
+    let engineer = new Engineer(inquirer.prompt([
+    {
+        type: "input",
+        message: "What is your engineer's name?",
+        name: "name",
+        validate: answer => {
+            if (answer !== "") {
+                return true;
+            } else
+            return "Please enter your name.";
+        }
+    },
+    {
+        type: "input",
+        message: "What is your engineer's ID?",
+        name: "id",
+        validate: answer => {
+            if (answer !== "number") {
+                return true;
+            } else
+            return "Please enter your ID number.";
+        }
+    },
+    {
+        type: "input",
+        message: "What is your engineer's email?",
+        name: "email",
+        validate: answer => {
+            if (answer !== "") {
+                return true;
+            } else
+            return "Please enter your email.";
+        }
+    },
+    {
+        type: "input",
+        message: "What is your engineer's GitHub name?",
+        name: "gitHubName",
+        validate: answer => {
+            if (answer !== "") {
+                return true;
+            } else
+            return "Please enter your GitHub name.";
+        }
+    },
+    ]))
+    .then(inquirer.prompt([
+    {
+        type: "list",
+        message: "Which type of team member would you like to add?",
+        name: "newMember",
+        choices: ["Engineer", "Intern", "I don't need any more team members."]
+    }
+    ]))
+    let intern = new Intern(inquirer.prompt([
+    {
+        type: "input",
+        message: "What is your intern's name?",
+        name: "name",
+        validate: answer => {
+            if (answer !== "") {
+                return true;
+            } else
+            return "Please enter your name.";
+        }
+    },
+    {
+        type: "input",
+        message: "What is your intern's ID?",
+        name: "id",
+        validate: answer => {
+            if (answer !== "number") {
+                return true;
+            } else
+            return "Please enter your ID number.";
+        }
+    },
+    {
+        type: "input",
+        message: "What is your intern's email?",
+        name: "email",
+        validate: answer => {
+            if (answer !== "") {
+                return true;
+            } else
+            return "Please enter your email.";
+        }
+    },
+    {
+        type: "input",
+        message: "What is your intern's school?",
+        name: "gitHubName",
+        validate: answer => {
+            if (answer !== "") {
+                return true;
+            } else
+            return "Please enter your school's name.";
+        }
+    },
+    ]))
+    .then(inquirer.prompt([
+    {
+        type: "list",
+        message: "Which type of team member would you like to add?",
+        name: "newMember",
+        choices: ["Engineer", "Intern", "I don't need any more team members."]
+    }
+    ]))
+}
 
+function validateNumber(number) {
+    var isValid = !_.isNaN(parseFloat(number));
+    return isValid || "It should be a number.";
+}
+
+function validateEmail(email) {
+    return Joi.validate(email, Joi.string().email(), onValidation);
+}
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
-
+render([manager, engineer, intern]);
+        
+   
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
 // `output` folder. You can use the variable `outputPath` above target this location.
