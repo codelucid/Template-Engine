@@ -96,7 +96,7 @@ function createTeam() {
     {
         type: "input",
         message: "What is your engineer's GitHub name?",
-        name: "gitHubName",
+        name: "gitHub",
         validate: answer => {
             if (answer !== "") {
                 return true;
@@ -150,7 +150,7 @@ function createTeam() {
     {
         type: "input",
         message: "What is your intern's school?",
-        name: "gitHubName",
+        name: "school",
         validate: answer => {
             if (answer !== "") {
                 return true;
@@ -180,7 +180,7 @@ function validateEmail(email) {
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
-render([manager, engineer, intern]);
+render(manager, engineer, intern);
         
    
 // After you have your html, you're now ready to create an HTML file using the HTML
