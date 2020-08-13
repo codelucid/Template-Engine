@@ -17,7 +17,7 @@ Prompt the user for information about the team manager and then information abou
 ## Installation  
 
 To install necessary dependencies, run the following command:
->npm install  
+>npm install jest inquirer  
 
 ## Usage  
 
