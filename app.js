@@ -13,282 +13,166 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+const team = [];
 
-function createTeam() {
-    console.log("Please build your team!");
-    let manager = new Manager(inquirer.prompt([
-    {
-        type: "input",
-        message: "What is your manager's name?",
-        name: "name",
-        // validate: function validateName(name) {
-        //     return name !== "";
-        // }
-    },
-    {
-        type: "input",
-        message: "What is your manager's ID?",
-        name: "id",
-        // validate: answer => {
-        //     if (answer !== "number") {
-        //         return true;
-        //     } else
-        //     return "Please enter your ID number.";
-        // }
-    },
-    {
-        type: "input",
-        message: "What is your manager's email?",
-        name: "email",
-        // validate: answer => {
-        //     if (answer !== "name@domain") {
-        //         return true;
-        //     } else
-        //     return "Please enter your email.";
-        // }
-    },
-    {
-        type: "input",
-        message: "What is your manager's office number?",
-        name: "officeNumber",
-        // validate: answer => {
-        //     if (answer !== "number") {
-        //         return true;
-        //     } else
-        //     return "Please enter your office number.";
-        // }
-    },
-    {
-        type: "list",
-        message: "Which type of team member would you like to add?",
-        name: "newMember",
-        choices: ["Engineer", "Intern", "I don't need anymore team members."],
-    },
-    ]).then(val => {
-        if (val.newMember === "Engineer") {
-            return engineerTeam();
-        } else if (val.newMember === "Intern") {
-            return internTeam();
-        } else  
-            return quit();
-        
-    })
-    ); 
-    
-};   
+buildTeam()
 
-
-function engineerTeam() {    
-    let engineer = new Engineer(inquirer.prompt([
-    {
-        type: "input",
-        message: "What is your engineer's name?",
-        name: "name",
-        // validate: answer => {
-        //     if (answer !== "") {
-        //         return true;
-        //     } else
-        //     return "Please enter your name.";
-        // }
-    },
-    {
-        type: "input",
-        message: "What is your engineer's ID?",
-        name: "id",
-        // validate: answer => {
-        //     if (answer !== "number") {
-        //         return true;
-        //     } else
-        //     return "Please enter your ID number.";
-        // }
-    },
-    {
-        type: "input",
-        message: "What is your engineer's email?",
-        name: "email",
-        // validate: answer => {
-        //     if (answer !== "name@domain") {
-        //         return true;
-        //     } else
-        //     return "Please enter your email.";
-        // }
-    },
-    {
-        type: "input",
-        message: "What is your engineer's GitHub name?",
-        name: "gitHub",
-        // validate: answer => {
-        //     if (answer !== "") {
-        //         return true;
-        //     } else
-        //     return "Please enter your GitHub name.";
-        // }
-    },
-    {
-        type: "list",
-        message: "Which type of team member would you like to add?",
-        name: "newMember",
-        choices: ["Engineer", "Intern", "I don't need anymore team members."],
-    },
-    ]).then(val => {
-        if (val.newMember === "Engineer") {
-            return engineerTeam();
-        } else if (val.newMember === "Intern") {
-            return internTeam();
-        } else  
-            return quit();
-        
-    })
-    );
-};
-
-
-function internTeam() {
-    let intern = new Intern(inquirer.prompt([
-    {
-        type: "input",
-        message: "What is your intern's name?",
-        name: "name",
-        // validate: answer => {
-        //     if (answer !== "") {
-        //         return true;
-        //     } else
-        //     return "Please enter your name.";
-        // }
-    },
-    {
-        type: "input",
-        message: "What is your intern's ID?",
-        name: "id",
-        // validate: answer => {
-        //     if (answer !== "number") {
-        //         return true;
-        //     } else
-        //     return "Please enter your ID number.";
-        // }
-    },
-    {
-        type: "input",
-        message: "What is your intern's email?",
-        name: "email",
-        // validate: answer => {
-        //     if (answer !== "") {
-        //         return true;
-        //     } else
-        //     return "Please enter your email.";
-        // }
-    },
-    {
-        type: "input",
-        message: "What is your intern's school?",
-        name: "school",
-        // validate: answer => {
-        //     if (answer !== "") {
-        //         return true;
-        //     } else
-        //     return "Please enter your school's name.";
-        // }
-    },
-    {
-        type: "list",
-        message: "Which type of team member would you like to add?",
-        name: "newMember",
-        choices: ["Engineer", "Intern", "I don't need anymore team members."],
-    },
-    ]).then(val => {
-        if (val.newMember === "Engineer") {
-            return engineerTeam();
-        } else if (val.newMember === "Intern") {
-            return internTeam();
-        } else  
-            return quit();
-        
-    })
-    );
-}; 
-  
-
-
-createTeam()
-    
-
-    
-
-
-
-
-
-// function newMember() {
-//     return inquirer.prompt([
-//         {
-//             type: "list",
-//             message: "Which type of team member would you like to add?",
-//             name: "newMember",
-//             choices: ["Engineer", "Intern", "I don't need anymore team members."],
-//             validate: answer => {
-//                 if (answer == "engineer") {
-//                     return engineerTeam;
-//                 } else if (answer == "intern") {
-//                     return internTeam;
-//                 } else {
-//                     return ("I don't need anymore team members.")
-//                 }
-//             }
-//         }
-//     ]);
-// };
-
-function quit(){
-    console.log("Team is complete!");
-    
+async function buildTeam() {
+  console.log("Please build your team")
+  // Always start by creating the manager
+  team.push(await createManager())
+  // Add additional team members until user is done
+  do {
+    var nextEmployee = await createNextEmployee();
+    if (nextEmployee) {
+      team.push(nextEmployee);
+    }
+  } while (nextEmployee)
+  // Create the output directory if the output path doesn't exist
+  if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR);
+  }
+  fs.writeFileSync(outputPath, render(team), "utf-8");
 }
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
 
-// let array = [manager, engineer, intern];
-// render.apply(null, array)
-//     fs.writeFileSync("team.html", array, function(err) {
-//         if (err) {
-//             return console.log(err);
-//         }
-//         console.log("Successfully wrote to team.html")
-//     });
+async function createManager() {
+  let answers = await inquirer.prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "What is your manager's name?",
+      validate: validateNonemptyString
+    },
+    {
+      type: "input",
+      name: "id",
+      message: "What is your manager's id?",
+      validate: validateId
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "What is your manager's email?",
+      validate: validateEmail
+    },
+    {
+      type: "input",
+      name: "officeNumber",
+      message: "What is your manager's office number?",
+      validate: validateNormalizedPositiveInteger
+    }
+  ])
+  return new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
+}
 
+async function createNextEmployee() {
+  let answers = await inquirer.prompt([{
+    type: "list",
+    name: "next",
+    message: "Which type of team member would you like to add?",
+    choices: [
+      "Engineer",
+      "Intern",
+      "I don't want to add any more team members"
+    ]
+  }])
+  switch (answers.next) {
+    case "Engineer": return createEngineer()
+    case "Intern":   return createIntern()
+    default:         return null
+  }
+}
 
+async function createEngineer() {
+  let answers = await inquirer.prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "What is your engineer's name?",
+      validate: validateNonemptyString
+    },
+    {
+      type: "input",
+      name: "id",
+      message: "What is your engineer's id?",
+      validate: validateId
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "What is your engineer's email?",
+      validate: validateEmail
+    },
+    {
+      type: "input",
+      name: "github",
+      message: "What is your engineer's GitHub username?",
+      validate: validateNonemptyString
+    }
+  ]);
+  return new Engineer(answers.name, answers.id, answers.email, answers.github);
+}
 
+async function createIntern() {
+  let answers = await inquirer.prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "What is your intern's name?",
+      validate: validateNonemptyString
+    },
+    {
+      type: "input",
+      name: "id",
+      message: "What is your intern's id?",
+      validate: validateId
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "What is your intern's email?",
+      validate: validateEmail
+    },
+    {
+      type: "input",
+      name: "school",
+      message: "What is your intern's school?",
+      validate: validateNonemptyString
+    }
+  ]);
+  return new Intern(answers.name, answers.id, answers.email, answers.school);
+}
 
-// render(manager, engineer, intern)
-//     .then(function(answers) {
-//         fs.writeFileAsync("team.html", answers, function(err){
+function validateNonemptyString(string) {
+  if (string === "") {
+    return "Please enter at least one character.";
+  } else {
+    return true;
+  }
+}
 
-//             if (err) {
-//                 return console.log(err);
-//             }
+function validateNormalizedPositiveInteger(string) {
+  if (!/^[1-9]\d*$/.test(string)) {
+    return "Please enter a positive number greater than zero."
+  } else {
+    return true;
+  }
+}
 
-//             console.log("Successfully wrote to team.html")
-//         });
-//     })
-//     .then(function() {
-       
-//     })
+function validateId(string) {
+  if (!/^[1-9]\d*$/.test(string)) {
+    return "Please enter a positive number greater than zero."
+  } else if (team.find((employee) => string === employee.getId())) {
+    return "This ID is already taken. Please enter a different number.";
+  } else {
+    return true;
+  }
+}
 
-
-
-        
-   
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+function validateEmail(string) {
+  if (!/\S+@\S+\.\S+/.test(string)) {
+    return "Please enter a valid email address.";
+  } else {
+    return true
+  }
+}
