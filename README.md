@@ -1,6 +1,6 @@
 # Template-Engine
 
-![GitHub license](https://img.shields.io/badge/Skill-HTML-brightgreen) ![GitHub license](https://img.shields.io/badge/Skill-CSS-blue) ![GitHub license](https://img.shields.io/badge/Skill-JavaScript-red) ![GitHub license](https://img.shields.io/badge/Skill-Express-yellow) ![GitHub license](https://img.shields.io/badge/Skill-Sequelize-green) ![GitHub license](https://img.shields.io/badge/Dependency-Inquirer-orange) ![GitHub license](https://img.shields.io/badge/Dependency-Jest-green) 
+![GitHub license](https://img.shields.io/badge/Skill-HTML-brightgreen) ![GitHub license](https://img.shields.io/badge/Skill-CSS-blue) ![GitHub license](https://img.shields.io/badge/Skill-JavaScript-red) ![GitHub license](https://img.shields.io/badge/Dependency-Inquirer-orange) ![GitHub license](https://img.shields.io/badge/Dependency-Jest-green) 
 
 ## Description  
 
