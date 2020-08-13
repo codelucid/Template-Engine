@@ -35,8 +35,8 @@ Not much to contribute with this repository.
 
 ## Tests  
 
-This is the command to initiate testing:
->No tests are needed for this application  
+![GitHub license](https://img.shields.io/badge/Test-Jest-brightgreen)
+- npm run test
 
 ## Questions  
 
